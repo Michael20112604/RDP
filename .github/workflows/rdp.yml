@@ -1,13 +1,32 @@
-name: Windows Cloud Desktop
+@echo off
+echo 正在启动 Windows Cloud Desktop...
 
-on:
-  workflow_dispatch:
+:: 设置远程桌面密码（你可以改成你喜欢的）
+net user runneradmin YourPassword123
 
-jobs:
-  build:
-    runs-on: windows-latest
-    steps:
-      - name: 下载启动脚本
-        run: Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Michael20112604/RDP/start.bat" -OutFile "start.bat"
-      - name: 运行启动脚本
-        run: start.bat ${{ secrets.NGROK_AUTH_TOKEN }}
+:: 下载并解压 ngrok
+curl -Lo ngrok.zip https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-stable-windows-amd64.zip
+powershell -Command "Expand-Archive ngrok.zip -DestinationPath ."
+del ngrok.zip
+
+:: 注入 ngrok token（来自 GitHub Secrets）
+ngrok.exe config add-authtoken %NGROK_AUTH_TOKEN%
+
+:: 启动 ngrok 隧道（监听 RDP 端口 3389）
+start /b ngrok.exe tcp 3389
+
+echo 等待 ngrok 启动...
+timeout /t 15 >nul
+
+:: 获取 ngrok 分配的公网地址
+curl -s http://127.0.0.1:4040/api/tunnels > tunnel.json
+type tunnel.json
+
+echo.
+echo ✅ 请在输出日志中查找 tcp://x.tcp.ngrok.io:xxxxx 地址
+echo 🖥️ 打开远程桌面 (mstsc)，输入该地址连接
+echo 🔑 用户名: runneradmin
+echo 🔐 密码: YourPassword123
+echo.
+
+pause
