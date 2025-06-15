@@ -1,0 +1,13 @@
+name: Windows Cloud Desktop
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: 下载启动脚本
+        run: Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CYB3RKING/RDP/main/start.bat" -OutFile "start.bat"
+      - name: 运行启动脚本
+        run: start.bat ${{ secrets.NGROK_AUTH_TOKEN }}
