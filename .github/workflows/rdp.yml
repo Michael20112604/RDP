@@ -14,4 +14,4 @@ jobs:
       - name: 下载并运行远程桌面脚本
         run: |
           Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Michael20112604/RDP/main/start.bat" -OutFile "start.bat"
-          start.bat
+          cmd /c start.bat
