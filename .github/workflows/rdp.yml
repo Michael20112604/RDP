@@ -8,6 +8,6 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: 下载启动脚本
-        run: Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CYB3RKING/RDP/main/start.bat" -OutFile "start.bat"
+        run: Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Michael20112604/RDP/start.bat" -OutFile "start.bat"
       - name: 运行启动脚本
         run: start.bat ${{ secrets.NGROK_AUTH_TOKEN }}
