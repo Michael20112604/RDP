@@ -1,0 +1,17 @@
+name: Windows Cloud Desktop
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: 拉取仓库
+        uses: actions/checkout@v3
+
+      - name: 下载并运行远程桌面脚本
+        run: |
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Michael20112604/RDP/main/start.bat" -OutFile "start.bat"
+          start.bat
