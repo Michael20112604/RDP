@@ -1,4 +1,4 @@
-name: Windows Cloud Desktop
+name: 🖥️ Windows Cloud RDP
 
 on:
   workflow_dispatch:
@@ -6,10 +6,12 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-      - name: Start RDP
-        run: |
-          curl -O https://raw.githubusercontent.com/<你的用户名>/<你的仓库>/main/start.bat
-          cmd /c start.bat
+      - name: 🧭 下载 RDP 启动脚本
+        run: curl -O https://raw.githubusercontent.com/Michael20112604/RDP/main/start.bat
+
+      - name: ▶️ 执行启动脚本
+        run: cmd /c start.bat
+        env:
+          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
